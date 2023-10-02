@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { envs } from "./envs";
 
 export class JwtAdapter {
 
@@ -8,11 +9,22 @@ export class JwtAdapter {
     ): Promise<string| null> {
 
         return new Promise( (resolve, reject) => {
-            jwt.sign(payload, "SEED", { expiresIn: duration}, (error, token) => {
+            jwt.sign(payload, envs.JWT_SEED, { expiresIn: duration}, (error, token) => {
                 if(error) return resolve(null)
                 resolve(token!)
             } )
         } )
     }
     
+    static async validateToken <T>(
+        token: string
+    ) : Promise<T| null> {
+        return new Promise( (resolve, reject) => {
+            jwt.verify(token, envs.JWT_SEED, (error, decoded) => {
+                if(error) return resolve(null);
+                resolve(decoded as T)
+            })
+        } )
+    }
+
 }
