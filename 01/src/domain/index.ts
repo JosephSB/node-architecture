@@ -10,3 +10,4 @@ export * from "./datasources/auth.datasources"
 export * from "./repositories/auth.repository"
 
 export * from "./use-cases/auth/register-user.use-case"
+export * from "./use-cases/auth/login-user.use-case"

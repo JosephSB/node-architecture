@@ -1,6 +1,6 @@
 import { bcryptAdapter } from "../../config";
 import { UserModel } from "../../data/mongodb";
-import { CustomError, RegisterUserDto, UserEntity } from "../../domain";
+import { CustomError, LoginUserDto, RegisterUserDto, UserEntity } from "../../domain";
 import { AuthDatasource } from "../../domain/datasources/auth.datasources";
 import { UserMapper } from "../mappers/user.mapper";
 
@@ -13,6 +13,25 @@ export class AuthDatasourceImpl implements AuthDatasource {
         private readonly hashPassword: HashFunction = bcryptAdapter.hash,
         private readonly comparePassword: CompareFunction = bcryptAdapter.compare,
     ){}
+
+
+    async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
+        const {email, password} = loginUserDto;
+
+        try {
+            const user = await UserModel.findOne({email})
+            if(!user) throw CustomError.badRequest("User not exists");
+
+            if(!this.comparePassword(password, user.password)) throw CustomError.badRequest("Invalid credentials");
+
+
+            return UserMapper.userEntityFromObject(user);
+
+        } catch (error) {
+            if(error instanceof CustomError) throw error
+            throw CustomError.internalServer();
+        }
+    }
 
     async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
         const {name, email, password} = registerUserDto;
