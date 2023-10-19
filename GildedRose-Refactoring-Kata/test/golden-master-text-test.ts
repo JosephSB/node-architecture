@@ -1,17 +1,17 @@
-import { Item } from '../app/item';
 import { GildedRose } from '../app/gilded-rose';
+import { FactoryUpdatableItem } from '../app/FactoryUpdatableItem';
 
 const items = [
-    new Item("+5 Dexterity Vest", 10, 20), //
-    new Item("Aged Brie", 2, 0), //
-    new Item("Elixir of the Mongoose", 5, 7), //
-    new Item("Sulfuras, Hand of Ragnaros", 0, 80), //
-    new Item("Sulfuras, Hand of Ragnaros", -1, 80),
-    new Item("Backstage passes to a TAFKAL80ETC concert", 15, 20),
-    new Item("Backstage passes to a TAFKAL80ETC concert", 10, 49),
-    new Item("Backstage passes to a TAFKAL80ETC concert", 5, 49),
+    FactoryUpdatableItem.create("+5 Dexterity Vest", 10, 20), //
+    FactoryUpdatableItem.create("Aged Brie", 2, 0), //
+    FactoryUpdatableItem.create("Elixir of the Mongoose", 5, 7), //
+    FactoryUpdatableItem.create("Sulfuras, Hand of Ragnaros", 0, 80), //
+    FactoryUpdatableItem.create("Sulfuras, Hand of Ragnaros", -1, 80),
+    FactoryUpdatableItem.create("Backstage passes to a TAFKAL80ETC concert", 15, 20),
+    FactoryUpdatableItem.create("Backstage passes to a TAFKAL80ETC concert", 10, 49),
+    FactoryUpdatableItem.create("Backstage passes to a TAFKAL80ETC concert", 5, 49),
     // this conjured item does not work properly yet
-    new Item("Conjured Mana Cake", 3, 6)
+    FactoryUpdatableItem.create("Conjured Mana Cake", 3, 6)
 ];
 
 
@@ -26,7 +26,8 @@ for (let i = 0; i < days; i++) {
     console.log("-------- day " + i + " --------");
     console.log("name, sellIn, quality");
     items.forEach(element => {
-        console.log(element.name + ' ' + element.sellIn + ' ' + element.quality);
+        const elementItem = element.getItem()
+        console.log(elementItem.name + ' ' + elementItem.sellIn + ' ' + elementItem.quality);
 
     });
     console.log();
